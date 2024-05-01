@@ -16,6 +16,7 @@ class Log(db.Model):
     fecha_y_hora = db.Column(db.DateTime, default=datetime.utcnow)
     texto = db.Column(db.TEXT)
 
+#Crear la tabla si no existe
 with app.app_context():
     db.create_all()
 
@@ -28,7 +29,7 @@ def index():
     #obtener registros de DB
     registros = Log.query.all()
     registros_ordenados = ordenar_por_fecha_y_hora(registros)
-    return render_template('index.html', registros=registros_ordenados)
+    return render_template('index.html',registros=registros_ordenados)
 
 mensajes_log = []
 
@@ -47,8 +48,8 @@ TOKEN_WACODE = "WACODE"
 @app.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
-        challengue = verificar_token(request)
-        return challengue
+        challenge = verificar_token(request)
+        return challenge
     elif request.method == 'POST':
         response = recibir_mensajes(request)
         return response
@@ -60,9 +61,8 @@ def verificar_token(req):
     if challenge and token == TOKEN_WACODE:
         return challenge
     else:
-        return jsonify({'error':'Token invalido'}), 401
+        return jsonify({'error':'Token invalido'}),401
     
-
 def recibir_mensajes(req):
     req = request.get_json()
     agregar_mensajes_log(req)
