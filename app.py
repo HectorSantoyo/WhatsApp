@@ -60,13 +60,14 @@ def verificar_token(req):
     if challenge and token == TOKEN_WACODE:
         return challenge
     else:
-        return jsonify({'error': 'Token invalido'}), 402
+        return jsonify({'error':'Token invalido'}), 401
     
 
 def recibir_mensajes(req):
     req = request.get_json()
     agregar_mensajes_log(req)
-    return jsonify({'message': 'EVENT_RECEIVED'})
+
+    return jsonify({'message':'EVENT_RECEIVED'})
 
 
 if __name__ == '__main__':
